@@ -7,6 +7,16 @@ $(document).ready(function() {
 		console.log(data);
 		// $('.greeting-content').append(data.content);
 	});
+	
+	$.ajax({
+		url : "/inet"
+	}).then(function(data) {
+		console.log();
+		$('.hostname').append("<small>Hostname: </small>" + data.hostname);
+		$('.inet').append("<small>Ip Address: </small>" + data.ipAddress);
+		console.log(data);
+		// $('.greeting-content').append(data.content);
+	});
 
 	$.ajax({
 		url : "/env"

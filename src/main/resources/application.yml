@@ -8,7 +8,7 @@ spring:
     admin:
       client:
         enabled: true
-        service-url: http://10.10.10.166:8080
+        service-url: http://10.10.10.166:8090
   mvc:
     async:
       request-timeout: -1

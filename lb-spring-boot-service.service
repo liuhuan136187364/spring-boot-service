@@ -22,7 +22,7 @@ ExecStart=/bin/bash -c '\
 	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/spring-boot-service-frontend/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "PathRegexp(`/.*`)"}\'; \
 	'
 ExecStop=/bin/bash -c '\
-	/usr/bin/docker kill lb-spring-boot-service; \
+	/usr/bin/docker stop lb-spring-boot-service; \
 	/usr/bin/etcdctl rm -r /lb-spring-boot-service/frontends; \
 	/usr/bin/etcdctl rm -r /lb-spring-boot-service/backends; \
 	'

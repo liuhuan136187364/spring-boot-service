@@ -1,4 +1,4 @@
-package rs.codecentrid.demo.utils;
+package rs.codecentrid.demo.inet;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -22,10 +22,8 @@ public class InetUtils implements Closeable {
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	// TODO: maybe shutdown the thread pool if it isn't being used?
 	private static ExecutorService executorService;
 	private final InetUtilsProperties properties;
-	private static final InetUtils instance = new InetUtils(new InetUtilsProperties());
 
 	public InetUtils(final InetUtilsProperties properties) {
 		this.properties = properties;
@@ -168,27 +166,6 @@ public class InetUtils implements Closeable {
 		return hostInfo;
 	}
 
-	/**
-	 * Find the first non-loopback host info. If there were errors return a host
-	 * info with 'localhost' and '127.0.0.1' for hostname and ipAddress
-	 * respectively.
-	 *
-	 * @deprecated use the non-static findFirstNonLoopbackHostInfo() instead
-	 */
-	@Deprecated
-	public static HostInfo getFirstNonLoopbackHostInfo() {
-		return instance.findFirstNonLoopbackHostInfo();
-	}
-
-	/**
-	 * Convert an internet address to a HostInfo.
-	 *
-	 * @deprecated use the non-static convertAddress() instead
-	 */
-	@Deprecated
-	public static HostInfo convert(final InetAddress address) {
-		return instance.convertAddress(address);
-	}
 
 	public static int getIpAddressAsInt(String host) {
 		return new HostInfo(host).getIpAddressAsInt();

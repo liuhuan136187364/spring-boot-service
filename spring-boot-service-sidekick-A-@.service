@@ -1,0 +1,32 @@
+[Unit]
+Description=Sidekick process from Spring Boot Service - A
+BindsTo=spring-boot-service-A-@%i.service
+After=spring-boot-service-A-@%i.service
+
+[Service]
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+EnvironmentFile=/etc/network-environment
+RemainAfterExit=yes
+Type=notify
+ExecStart=/bin/bash -c '\
+  CONTAINER_NAME="spring-boot-service-A-"%i;\
+  while [ -z $CONTAINER_PORT ]; do \
+    sleep 5; \
+    CONTAINER_PORT=`/usr/bin/docker inspect --format=\'{{range $p, $conf := .NetworkSettings.Ports}}{{if eq $p "'8090'/tcp"}}{{(index $conf 0).HostPort}}{{end}} {{end}}\' $${CONTAINER_NAME}`; \
+  done; \
+  SERVICE_URL="http://${DEFAULT_IPV4}:$${CONTAINER_PORT}"; \
+  while true; do \
+  	CONNECTED = /bin/nc -vz \${DEFAULT_IPV4} \$$CONTAINER_PORT;
+  	if [-z $$CONNECTED]; \
+  		/usr/bin/etcdctl set --ttl 30 /vulcand/backends/spring-boot-service-backend-A/servers/server-%i \'{"URL":"\'$(echo $${SERVICE_URL})\'"}\'; \
+  	fi; \
+  	sleep 25; \  
+  done;
+'
+ExecStop=/bin/sh -c ' \
+  /usr/bin/etcdctl rm /vulcand/backends/spring-boot-service-backend-A/servers/server-%i; \
+'
+
+[X-Fleet]
+X-ConditionMachineOf=spring-boot-service-A-@%i.service

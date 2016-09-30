@@ -1,0 +1,15 @@
+[Unit]
+Description=Spring Boot Service - B
+Requires=setup-network-environment.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill spring-boot-service-B-%i
+ExecStartPre=-/usr/bin/docker rm spring-boot-service-B-%i
+ExecStartPre=/usr/bin/docker pull 10.10.10.102:5000/spring-boot-service:latest
+ExecStart=/usr/bin/docker run --rm --name spring-boot-service-B-%i -p :8090 -e DEPLOYMENT_GROUP=B 10.10.10.102:5000/spring-boot-service:latest
+ExecStop=/usr/bin/docker kill spring-boot-service-B-%i
+
+[X-Fleet]
+MachineMetadata=node-type=worker

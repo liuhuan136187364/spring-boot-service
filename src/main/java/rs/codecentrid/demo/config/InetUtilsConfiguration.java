@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import rs.codecentrid.demo.utils.InetUtils;
-import rs.codecentrid.demo.utils.InetUtilsProperties;
+import rs.codecentrid.demo.inet.InetUtils;
+import rs.codecentrid.demo.inet.InetUtilsProperties;
 
 @Configuration
 public class InetUtilsConfiguration {

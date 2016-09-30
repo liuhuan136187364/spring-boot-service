@@ -1,4 +1,4 @@
-package rs.codecentrid.demo.utils;
+package rs.codecentrid.demo.inet;
 
 import java.net.InetAddress;
 import java.util.ArrayList;

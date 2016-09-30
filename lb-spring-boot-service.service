@@ -20,7 +20,8 @@ ExecStart=/usr/bin/docker run --rm --net=host --name=lb-spring-boot-service -p 8
 ExecStartPost=/bin/bash -c '\
 	echo "Registering configuration to ETCD"; \
 	/usr/bin/etcdctl set /lb-spring-boot-service/backends/spring-boot-service-backend-A/backend \'{"Type": "http"}\'; \
-	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/spring-boot-service-frontend/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "PathRegexp(`/.*`)"}\'; \
+	/usr/bin/etcdctl set /lb-spring-boot-service/backends/spring-boot-service-backend-B/backend \'{"Type": "http"}\'; \
+	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/spring-boot-service-frontend/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "PathRegexp(`/.*`)", "Settings": {"TrustForwardHeader": true, "PassHostHeader": true}}\'; \
 	'
 
 ExecStop=/bin/bash -c '\

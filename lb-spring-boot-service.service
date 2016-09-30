@@ -7,8 +7,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill lb-spring-boot-service
 ExecStartPre=-/usr/bin/docker rm lb-spring-boot-service
 ExecStartPre=/usr/bin/docker pull 10.10.10.102:5000/vulcand:latest
-ExecStart=/bin/bash -c '\
-	/usr/bin/docker run --rm --net=host --name=lb-spring-boot-service -p 80:80 -p 8182:8182 10.10.10.102:5000/vulcand \
+ExecStart=/usr/bin/docker run --rm --net=host --name=lb-spring-boot-service -p 80:80 -p 8182:8182 10.10.10.102:5000/vulcand \
 	-etcdKey="lb-spring-boot-service" \
 	-port=80 \
 	-apiPort=8182 \
@@ -17,10 +16,13 @@ ExecStart=/bin/bash -c '\
 	-etcd=http://10.10.10.101:2379 \
 	-etcd=http://10.10.10.102:2379 \
 	-etcd=http://10.10.10.103:2379; \
+
+ExecStartPost=/bin/bash -c '\
 	echo "Registering configuration to ETCD"; \
 	/usr/bin/etcdctl set /lb-spring-boot-service/backends/spring-boot-service-backend-A/backend \'{"Type": "http"}\'; \
 	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/spring-boot-service-frontend/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "PathRegexp(`/.*`)"}\'; \
 	'
+
 ExecStop=/bin/bash -c '\
 	/usr/bin/docker stop lb-spring-boot-service; \
 	/usr/bin/etcdctl rm -r /lb-spring-boot-service/frontends; \

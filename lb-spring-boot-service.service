@@ -17,7 +17,6 @@ ExecStart=/bin/bash -c '\
 	-etcd=http://10.10.10.101:2379 \
 	-etcd=http://10.10.10.102:2379 \
 	-etcd=http://10.10.10.103:2379; \
-	
 	/usr/bin/etcdctl set /lb-spring-boot-service/backends/spring-boot-service-backend-A/backend \'{"Type": "http"}\'; \
 	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/spring-boot-service-frontend/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "PathRegexp(`/.*`)"}\'; \
 	'

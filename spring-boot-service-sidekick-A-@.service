@@ -17,11 +17,11 @@ ExecStart=/bin/bash -c '\
   done; \
   SERVICE_URL="http://${DEFAULT_IPV4}:$${CONTAINER_PORT}"; \
   while true; do \
-   CONNECTED = /bin/nc -vz \${DEFAULT_IPV4} \$$CONTAINER_PORT; \
+    CONNECTED = /bin/nc -vz \${DEFAULT_IPV4} \$$CONTAINER_PORT; \
     if [-z $$CONNECTED]; \
-      /usr/bin/etcdctl set --ttl 30 /vulcand/backends/spring-boot-service-backend-A/servers/server-%i \'{"URL":"\'$(echo $${SERVICE_URL})\'"}\'; \
+        /usr/bin/etcdctl set --ttl 30 /vulcand/backends/spring-boot-service-backend-A/servers/server-%i \'{"URL":"\'$(echo $${SERVICE_URL})\'"}\'; \
     fi; \
-  sleep 25; \
+    sleep 25; \
   done; \
 '
 ExecStop=/bin/sh -c '\

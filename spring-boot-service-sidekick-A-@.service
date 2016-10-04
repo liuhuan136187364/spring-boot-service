@@ -18,7 +18,7 @@ ExecStart=/bin/bash -c '\
   SERVICE_URL="http://${DEFAULT_IPV4}:$${CONTAINER_PORT}"; \
   while true; do \
     CONNECTED=`/bin/nc -vz ${DEFAULT_IPV4} $${CONTAINER_PORT}`; \
-    if [-z $$CONNECTED]; then \
+    if [ -z $$CONNECTED ]; then \
       /usr/bin/etcdctl set --ttl 30 /vulcand/backends/spring-boot-service-backend-A/servers/server-%i \'{"URL":"\'$(echo $${SERVICE_URL})\'"}\'; \
     fi; \
     sleep 25; \

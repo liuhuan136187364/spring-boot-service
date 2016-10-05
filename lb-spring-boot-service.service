@@ -21,7 +21,8 @@ ExecStartPost=/bin/bash -c '\
 	echo "Registering configuration to ETCD"; \
 	/usr/bin/etcdctl set /lb-spring-boot-service/backends/spring-boot-service-backend-A/backend \'{"Type": "http"}\'; \
 	/usr/bin/etcdctl set /lb-spring-boot-service/backends/spring-boot-service-backend-B/backend \'{"Type": "http"}\'; \
-	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/spring-boot-service-frontend/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "PathRegexp(`/.*`)", "Settings": {"TrustForwardHeader": true, "PassHostHeader": true}}\'; \
+	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/stage/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-A", "Route": "Host(`stage.codecentric.local`) && PathRegexp(`/.*`)", "Settings": {"TrustForwardHeader": true, "PassHostHeader": true}}\'; \
+	/usr/bin/etcdctl set /lb-spring-boot-service/frontends/prod/frontend \'{"Type": "http", "BackendId": "spring-boot-service-backend-B", "Route": "Host(`prod.codecentric.local`) && PathRegexp(`/.*`)", "Settings": {"TrustForwardHeader": true, "PassHostHeader": true}}\'; \
 	'
 
 ExecStop=/bin/bash -c '\

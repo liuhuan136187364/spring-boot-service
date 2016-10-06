@@ -10,7 +10,7 @@
 	<artifactId>spring-boot-service</artifactId>
 	<name>Spring Boot Service</name>
 	<description>Spring Boot Dummy Microservice</description>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<url>http://www.codecentric.rs</url>
 	<organization>
 		<name>codecentric d.o.o..</name>

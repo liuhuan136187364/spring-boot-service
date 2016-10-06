@@ -17,8 +17,8 @@ ExecStart=/bin/bash -c '\
   done; \
   SERVICE_URL="http://${DEFAULT_IPV4}:$${CONTAINER_PORT}"; \
   while true; do \
-    CONNECTED=`curl -sL -w "%{http_code}\\n" $${SERVICE_URL} -o /dev/null` \
-    if [[ "200" == $$CONNECTED ]]; then \
+    CONNECTED=`/bin/nc -vz ${DEFAULT_IPV4} $${CONTAINER_PORT}`; \
+    if [ -z $$CONNECTED ]; then \
       /usr/bin/etcdctl set --ttl 30 /lb-spring-boot-service/backends/spring-boot-service-backend-A/servers/server-%i \'{"URL":"\'$(echo $${SERVICE_URL})\'"}\'; \
     fi; \
     sleep 25; \
